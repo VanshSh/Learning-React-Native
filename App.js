@@ -1,12 +1,8 @@
 import React from 'react'
-import {
-    View,
-    Text,
-    StyleSheet,
-    TextInput,
-    Button,
-    FlatList,
-} from 'react-native'
+import { View, StyleSheet, TextInput, Button, FlatList } from 'react-native'
+
+import GoalItem from './components/GoalItem'
+import GoalInput from './components/GoalInput'
 
 export default function App() {
     const [enteredGoalText, setEnteredGoalText] = React.useState('')
@@ -26,28 +22,30 @@ export default function App() {
         ])
         setEnteredGoalText('')
     }
-    console.log(courseGoals)
+
+    const deleteGoalHandler = (goalId) => {
+        setCourseGoals((currentGoals) => {
+            return currentGoals.filter((goal) => goal.id !== goalId)
+        })
+    }
     return (
         <View style={styles.appContainer}>
-            <View style={styles.inputContainer}>
-                <TextInput
-                    value={enteredGoalText}
-                    style={styles.textInput}
-                    placeholder='Your course goal..'
-                    onChangeText={goalInputHandler}
-                />
-                <Button onPress={addGoalHandler} title='Add Goal' />
-            </View>
             <View style={styles.goalsContainer}>
+                <GoalInput
+                    onAddGoal={addGoalHandler}
+                    onInputChange={goalInputHandler}
+                    enteredText={enteredGoalText}
+                />
+
                 <FlatList
                     data={courseGoals}
                     renderItem={(itemData) => {
                         return (
-                            <View style={styles.goalItem}>
-                                <Text style={{ color: '#fff', fontSize: 20 }}>
-                                    {itemData.item.newGoal}
-                                </Text>
-                            </View>
+                            <GoalItem
+                                text={itemData.item.newGoal}
+                                onDeleteGoal={deleteGoalHandler}
+                                id={itemData.item.id}
+                            />
                         )
                     }}
                     keyExtractor={(item, index) => item.id}
@@ -63,30 +61,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         flex: 1,
     },
-    inputContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        marginBottom: 24,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    textInput: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        width: '70%',
-        marginRight: 8,
-        padding: 8,
-    },
+
     goalsContainer: {
-        flex: 5,
-    },
-    goalItem: {
-        margin: 8,
-        padding: 8,
-        borderRadius: 6,
-        backgroundColor: '#5e0acc',
-        paddingLeft: 16,
+        flex: 1,
     },
 })
