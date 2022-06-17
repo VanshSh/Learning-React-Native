@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, TextInput, Button, FlatList } from 'react-native'
+import { View, StyleSheet, Image, FlatList, Text } from 'react-native'
 
 import GoalItem from './components/GoalItem'
 import GoalInput from './components/GoalInput'
@@ -30,6 +30,15 @@ export default function App() {
     }
     return (
         <View style={styles.appContainer}>
+            <View style={{ alignItems: 'center' }}>
+                <Image
+                    source={require('./app/assets/target.jpeg')}
+                    style={{
+                        width: 100,
+                        height: 100,
+                    }}
+                />
+            </View>
             <View style={styles.goalsContainer}>
                 <GoalInput
                     onAddGoal={addGoalHandler}
